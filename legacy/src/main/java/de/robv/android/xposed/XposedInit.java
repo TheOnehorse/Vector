@@ -202,7 +202,13 @@ public final class XposedInit {
     public static Map<String, Optional<String>> getLoadedModules() {
         return loadedModules;
     }
-
+    public static String getDesc(Object obj) {
+        try {
+            return (String) XposedHelpers.callMethod(obj, "getInterfaceDescriptor", new Object[0]);
+        } catch (Throwable unused) {
+            return null;
+        }
+    }
     public static void loadLegacyModules() {
         var moduleList = VectorServiceClient.INSTANCE.getLegacyModules();
         moduleList.forEach(module -> {
