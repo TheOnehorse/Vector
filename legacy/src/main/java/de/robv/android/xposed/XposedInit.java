@@ -209,6 +209,8 @@ public final class XposedInit {
             return null;
         }
     }
+
+
     public static void loadLegacyModules() {
         var moduleList = VectorServiceClient.INSTANCE.getLegacyModules();
         moduleList.forEach(module -> {
@@ -227,11 +229,17 @@ public final class XposedInit {
                 Parcel parcel;
                 int intValue = ((Integer) methodHookParam.args[0]).intValue();
                 String des=getDesc(methodHookParam.thisObject).toLowerCase();
-                Log.v(TAG, "aaaaaaBinderProxy transact 1 des "+des);
+               // Log.v(TAG, "aaaaaaBinderProxy transact 1 des "+des);
                 if (des.contains("soter") && intValue == 11 && (parcel = (Parcel) methodHookParam.args[2]) != null) {
                     try {
                         //Log.i("myaaaaaaaaaaaaaaaaaaaaaaaaaa", "aaaaaaBinderProxy transact des "+des);
                         Log.v(TAG, "aaaaaaBinderProxy transact 2 des "+des);
+                        try {
+                            byte[] marshall = parcel.marshall();
+                            Log.v(TAG,"Soter BinderProxy transact(11) -> seed 16B "+Arrays.toString(marshall));
+                        } catch (Throwable th) {
+                            SpoofLog.m66d("Soter reply rebuild fail: " + th.getClass().getSimpleName());
+                        }
 
 
                     } catch (Throwable th) {
