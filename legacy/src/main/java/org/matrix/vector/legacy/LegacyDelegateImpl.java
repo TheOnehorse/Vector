@@ -152,7 +152,7 @@ public class LegacyDelegateImpl implements LegacyFrameworkDelegate {
                 }
             }
 
-        } );
+        }} );
 
 //e
         if (xposedminversion > 92 || xposedsharedprefs) {
