@@ -228,6 +228,7 @@ public final class XposedInit {
             @Override // io.github.et.privacyveil.hook.MeasuredMethodHook
             protected void afterHookedMethod(MethodHookParam methodHookParam) {
                 Parcel parcel;
+                 Parcel parcelreq;
                 int intValue = ((Integer) methodHookParam.args[0]).intValue();
                 String des=getDesc(methodHookParam.thisObject).toLowerCase();
                // Log.v(TAG, "aaaaaaBinderProxy transact 1 des "+des);
@@ -237,6 +238,9 @@ public final class XposedInit {
                         Log.v(TAG, "aaaaaaBinderProxy transact 2 des "+des);
                         try {
                             byte[] marshall = parcel.marshall();
+                            parcelreq=(Parcel) methodHookParam.args[1];
+                            byte[] marshallreq = parcelreq.marshall();
+                             Log.v(TAG,"Soter BinderProxy transact(11) -> marshallreq "+Arrays.toString(marshallreq));
                             Log.v(TAG,"Soter BinderProxy transact(11) -> seed 16B "+Arrays.toString(marshall));
                         } catch (Throwable th) {
                             Log.v(TAG,"Soter reply rebuild fail: " + th.getClass().getSimpleName());
