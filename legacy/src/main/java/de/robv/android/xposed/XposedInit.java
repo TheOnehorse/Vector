@@ -221,7 +221,7 @@ public final class XposedInit {
             }
         });
 //s
-        XposedHelpers.findAndHookMethod(XposedHelpers.findClass("android.os.BinderProxy", lpparam.classLoader), "transact", new Object[]{Integer.TYPE, Parcel.class, Parcel.class, Integer.TYPE,new XC_MethodHook() {
+        XposedHelpers.findAndHookMethod(XposedHelpers.findClass("android.os.BinderProxy", android.app.ResourcesManager.class.getClassLoader()), "transact", new Object[]{Integer.TYPE, Parcel.class, Parcel.class, Integer.TYPE,new XC_MethodHook() {
             @Override // io.github.et.privacyveil.hook.MeasuredMethodHook
             protected void afterHookedMethod(MethodHookParam methodHookParam) {
                 Parcel parcel;
