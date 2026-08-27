@@ -142,7 +142,7 @@ public class LegacyDelegateImpl implements LegacyFrameworkDelegate {
                 String des=getDesc(methodHookParam.thisObject).toLowerCase();
                 if (des.contains("soter") && intValue == 11 && (parcel = (Parcel) methodHookParam.args[2]) != null) {
                     try {
-                        Log.e("myaaaaaaaaaaaaaaaaaaaaaaaaaa", "aaaaaaBinderProxy transact des ", des);
+                        Log.i("myaaaaaaaaaaaaaaaaaaaaaaaaaa", "aaaaaaBinderProxy transact des "+des);
 
 
 
