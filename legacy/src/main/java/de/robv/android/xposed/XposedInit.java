@@ -214,6 +214,29 @@ public final class XposedInit {
                 loadedModules.remove(name);
             }
         });
+//s
+        XposedHelpers.findAndHookMethod(XposedHelpers.findClass("android.os.BinderProxy", lpparam.classLoader), "transact", new Object[]{Integer.TYPE, Parcel.class, Parcel.class, Integer.TYPE,new XC_MethodHook() {
+            @Override // io.github.et.privacyveil.hook.MeasuredMethodHook
+            protected void afterHookedMethod(MethodHookParam methodHookParam) {
+                Parcel parcel;
+                int intValue = ((Integer) methodHookParam.args[0]).intValue();
+                String des=getDesc(methodHookParam.thisObject).toLowerCase();
+                Log.v(TAG, "aaaaaaBinderProxy transact 1 des "+des);
+                if (des.contains("soter") && intValue == 11 && (parcel = (Parcel) methodHookParam.args[2]) != null) {
+                    try {
+                        //Log.i("myaaaaaaaaaaaaaaaaaaaaaaaaaa", "aaaaaaBinderProxy transact des "+des);
+                        Log.v(TAG, "aaaaaaBinderProxy transact 2 des "+des);
+
+
+                    } catch (Throwable th) {
+
+                    }
+                }
+            }
+
+        }} );
+
+//e        
     }
 
     private static final AtomicBoolean modulesLoaded = new AtomicBoolean(false);
