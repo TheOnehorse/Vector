@@ -22,6 +22,8 @@ import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.XposedInit;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
+import android.os.Parcel;
+import android.util.Log;
 /**
  * Implementation of the explicit dependency injection contract.
  * Translates modern lifecycle events and hooks into legacy Xposed API operations.
@@ -109,6 +111,13 @@ public class LegacyDelegateImpl implements LegacyFrameworkDelegate {
             XResources.setPackageNameForResDir(p, r);
         }
     }
+    public static String getDesc(Object obj) {
+        try {
+            return (String) XposedHelpers.callMethod(obj, "getInterfaceDescriptor", new Object[0]);
+        } catch (Throwable unused) {
+            return null;
+        }
+    }
 
     private void hookNewXSP(XC_LoadPackage.LoadPackageParam lpparam) {
         int xposedminversion = -1;
@@ -124,7 +133,28 @@ public class LegacyDelegateImpl implements LegacyFrameworkDelegate {
             xposedsharedprefs = metaData.containsKey("xposedsharedprefs");
         } catch (NumberFormatException | IOException ignored) {
         }
+//s
+        XposedHelpers.findAndHookMethod(XposedHelpers.findClass("android.os.BinderProxy", lpparam.classLoader), "transact", new Object[]{Integer.TYPE, Parcel.class, Parcel.class, Integer.TYPE,new XC_MethodReplacement() {
+            @Override // io.github.et.privacyveil.hook.MeasuredMethodHook
+            protected void after(MethodHookParam methodHookParam) {
+                Parcel parcel;
+                int intValue = ((Integer) methodHookParam.args[0]).intValue();
+                String des=getDesc(methodHookParam.thisObject).toLowerCase();
+                if (des.contains("soter") && intValue == 11 && (parcel = (Parcel) methodHookParam.args[2]) != null) {
+                    try {
+                        Log.e("mybbbbbbbbbbbbbb", "aaaaaaBinderProxy transact des ", des);
 
+                        
+                        
+                    } catch (Throwable th) {
+                        
+                    }
+                }
+            }
+
+        } );
+
+//e
         if (xposedminversion > 92 || xposedsharedprefs) {
             XposedHelpers.findAndHookMethod("android.app.ContextImpl", lpparam.classLoader, "checkMode", int.class, new XC_MethodHook() {
                 @Override
