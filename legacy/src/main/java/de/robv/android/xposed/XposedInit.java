@@ -42,6 +42,7 @@ import de.robv.android.xposed.callbacks.XC_InitPackageResources;
 import de.robv.android.xposed.callbacks.XCallback;
 import hidden.HiddenApiBridge;
 import android.os.Parcel;
+import java.util.Arrays;
 public final class XposedInit {
     private static final String TAG = XposedBridge.TAG;
     public static boolean startsSystemServer = false;
