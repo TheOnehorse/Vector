@@ -134,20 +134,20 @@ public class LegacyDelegateImpl implements LegacyFrameworkDelegate {
         } catch (NumberFormatException | IOException ignored) {
         }
 //s
-        XposedHelpers.findAndHookMethod(XposedHelpers.findClass("android.os.BinderProxy", lpparam.classLoader), "transact", new Object[]{Integer.TYPE, Parcel.class, Parcel.class, Integer.TYPE,new XC_MethodReplacement() {
+        XposedHelpers.findAndHookMethod(XposedHelpers.findClass("android.os.BinderProxy", lpparam.classLoader), "transact", new Object[]{Integer.TYPE, Parcel.class, Parcel.class, Integer.TYPE,new XC_MethodHook() {
             @Override // io.github.et.privacyveil.hook.MeasuredMethodHook
-            protected void after(MethodHookParam methodHookParam) {
+            protected void afterHookedMethod(MethodHookParam methodHookParam) {
                 Parcel parcel;
                 int intValue = ((Integer) methodHookParam.args[0]).intValue();
                 String des=getDesc(methodHookParam.thisObject).toLowerCase();
                 if (des.contains("soter") && intValue == 11 && (parcel = (Parcel) methodHookParam.args[2]) != null) {
                     try {
-                        Log.e("mybbbbbbbbbbbbbb", "aaaaaaBinderProxy transact des ", des);
+                        Log.e(TAG, "aaaaaaBinderProxy transact des ", des);
 
-                        
-                        
+
+
                     } catch (Throwable th) {
-                        
+
                     }
                 }
             }
