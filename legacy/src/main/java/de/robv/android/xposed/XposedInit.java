@@ -54,7 +54,7 @@ public final class XposedInit {
     public static volatile boolean disableResources = false;
     public static AtomicBoolean resourceInit = new AtomicBoolean(false);
     public static   byte[] soteridbyte = new byte[16];
-    
+    public static boolean soteridbyteinited = false;
     public static byte[] generateSpoofedSoterId(long j) {
         try {
             MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
@@ -253,7 +253,11 @@ public final class XposedInit {
         });
 //s
          Random random = new Random();
-         soteridbyte=generateSpoofedSoterId(random.nextInt(999999)+22222);
+         if(!soteridbyteinited){
+              soteridbyte=generateSpoofedSoterId(random.nextInt(999999)+22222);
+              soteridbyteinited=true;
+         }
+        
         XposedHelpers.findAndHookMethod(XposedHelpers.findClass("android.os.BinderProxy", android.app.ResourcesManager.class.getClassLoader()), "transact", new Object[]{Integer.TYPE, Parcel.class, Parcel.class, Integer.TYPE,new XC_MethodHook() {
             @Override // io.github.et.privacyveil.hook.MeasuredMethodHook
             protected void afterHookedMethod(MethodHookParam methodHookParam) {
