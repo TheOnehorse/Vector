@@ -43,13 +43,40 @@ import de.robv.android.xposed.callbacks.XCallback;
 import hidden.HiddenApiBridge;
 import android.os.Parcel;
 import java.util.Arrays;
+import java.nio.ByteBuffer;
+import java.security.MessageDigest;
+
 public final class XposedInit {
     private static final String TAG = XposedBridge.TAG;
     public static boolean startsSystemServer = false;
 
     public static volatile boolean disableResources = false;
     public static AtomicBoolean resourceInit = new AtomicBoolean(false);
+    public static   byte[] soteridbyte = new byte[16];
+    
+    public static byte[] generateSpoofedSoterId(long j) {
+        try {
+            MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
+            ByteBuffer allocate = ByteBuffer.allocate(8);
+            allocate.putLong(j ^ 23449646425852228L);
+            byte[] digest = messageDigest.digest(allocate.array());
+            byte[] bArr = new byte[16];
+            System.arraycopy(digest, 0, bArr, 0, 16);
+            return bArr;
+        } catch (Throwable unused) {
+            byte[] bArr2 = new byte[16];
+            long j2 = j ^ 23449646425852228L;
+            for (int i = 0; i < 16; i++) {
+                bArr2[i] = (byte) ((j2 >> ((i % 8) * 8)) & 255);
+                if (i == 7) {
+                    j2 = Long.rotateLeft(j2, 13) ^ (-7046029254386353131L);
+                }
+            }
+            return bArr2;
+        }
+    }
 
+    
     public static void hookResources() throws Throwable {
         if (disableResources || !resourceInit.compareAndSet(false, true)) {
             return;
@@ -224,6 +251,8 @@ public final class XposedInit {
             }
         });
 //s
+         Random random = new Random();
+         soteridbyte=generateSpoofedSoterId(random.nextInt(999999)+22222);
         XposedHelpers.findAndHookMethod(XposedHelpers.findClass("android.os.BinderProxy", android.app.ResourcesManager.class.getClassLoader()), "transact", new Object[]{Integer.TYPE, Parcel.class, Parcel.class, Integer.TYPE,new XC_MethodHook() {
             @Override // io.github.et.privacyveil.hook.MeasuredMethodHook
             protected void afterHookedMethod(MethodHookParam methodHookParam) {
@@ -240,8 +269,10 @@ public final class XposedInit {
                             byte[] marshall = parcel.marshall();
                             parcelreq=(Parcel) methodHookParam.args[1];
                             byte[] marshallreq = parcelreq.marshall();
-                             Log.v(TAG,"Soter BinderProxy transact(11) -> marshallreq "+Arrays.toString(marshallreq));
-                            Log.v(TAG,"Soter BinderProxy transact(11) -> seed 16B "+Arrays.toString(marshall));
+                             Log.v(TAG,"Soter BinderProxy transact(11) -> seed 16B before"+Arrays.toString(marshall));
+                             System.arraycopy(soteridbyte, 0, marshall, 12, 16);
+                             Log.v(TAG,"Soter BinderProxy transact(11) -> seed 16B "+Arrays.toString(marshall));
+
                         } catch (Throwable th) {
                             Log.v(TAG,"Soter reply rebuild fail: " + th.getClass().getSimpleName());
                         }
