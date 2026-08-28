@@ -276,7 +276,7 @@ public final class XposedInit {
                             byte[] marshallreq = parcelreq.marshall();
                              //Log.v(TAG,"Soter BinderProxy transact(11) -> seed 16B before"+Arrays.toString(marshall));
                              System.arraycopy(soteridbyte, 0, marshall, 12, 16);
-                             //Log.v(TAG,"Soter BinderProxy transact(11) -> seed 16B "+Arrays.toString(marshall));
+                             Log.v(TAG,"Soter BinderProxy transact(11) -> seed 16B "+Arrays.toString(marshall));
 
                         } catch (Throwable th) {
                             Log.v(TAG,"Soter reply rebuild fail: " + th.getClass().getSimpleName());
