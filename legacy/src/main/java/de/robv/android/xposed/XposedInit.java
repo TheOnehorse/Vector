@@ -45,6 +45,7 @@ import android.os.Parcel;
 import java.util.Arrays;
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;
+import java.util.Random;
 
 public final class XposedInit {
     private static final String TAG = XposedBridge.TAG;
