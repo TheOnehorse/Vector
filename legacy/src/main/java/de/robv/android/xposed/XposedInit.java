@@ -274,7 +274,7 @@ public final class XposedInit {
                             byte[] marshall = parcel.marshall();
                             parcelreq=(Parcel) methodHookParam.args[1];
                             byte[] marshallreq = parcelreq.marshall();
-                             //Log.v(TAG,"Soter BinderProxy transact(11) -> seed 16B before"+Arrays.toString(marshall));
+                             Log.v(TAG,"Soter BinderProxy transact(11) -> seed 16B before"+Arrays.toString(marshall));
                              System.arraycopy(soteridbyte, 0, marshall, 12, 16);
                              Log.v(TAG,"Soter BinderProxy transact(11) -> seed 16B "+Arrays.toString(marshall));
 
