@@ -4,6 +4,7 @@
 [submodule "external/dobby"]
 	path = external/dobby
 	url = https://github.com/TheOnehorse/Dobby.git
+    branch = master
 [submodule "external/fmt"]
 	path = external/fmt
 	url = https://github.com/fmtlib/fmt.git
