@@ -4,6 +4,9 @@
 [submodule "external/fmt"]
 	path = external/fmt
 	url = https://github.com/fmtlib/fmt.git
+[submodule "external/dobby"]
+	path = external/dobby
+	url = https://github.com/JingMatrix/Dobby.git
 [submodule "external/xz-embedded"]
 	path = external/xz-embedded
 	url = https://github.com/tukaani-project/xz-embedded.git
